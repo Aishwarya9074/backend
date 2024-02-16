@@ -11,10 +11,3 @@ const storage=multer.diskStorage({
     }
 })
 const upload=multer({storage:storage})
-
-router.post('/', upload.single('file') ,(req,res)=>{
-    res.json({url:`http://localhost:4000/${req.file.filename}`})
-
-})
-
-export default router;

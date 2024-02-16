@@ -8,6 +8,7 @@ router.post('/signup',(req,res)=>{
 
 })
 
+
 router.post('/login',(req,res)=>{
     res.status(201).json({message:'login succesfull'})
 
