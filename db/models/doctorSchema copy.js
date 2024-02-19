@@ -6,7 +6,7 @@ const DoctorSchema=Schema({
         required:true,
         trim:true,
     },
-    userName:{
+    username:{
         type:String,
         required:true,
         trim:true,
@@ -14,7 +14,7 @@ const DoctorSchema=Schema({
     },
     image:{
         type:String,
-        required:true,
+        // required:true,
         trim:true,
 
     },
