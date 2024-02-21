@@ -1,13 +1,14 @@
 import express from "express";
-import Doctor from "../../db/models/userSchema.js";
+import User from "../../db/models/userSchema.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
 
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
   const body = { ...req.body };
-  const doctor = await Doctor.findOne({ username: body.username });
-  if (doctor) {
+  const user = await User.findOne({ username: body.username });
+  if (user) {
     return res.status(403).json({ message: "username already taken" });
   }
   if (body.password !== body.confirmPassword) {
@@ -16,32 +17,32 @@ router.post("/signup", async (req, res) => {
   const hashPassword = await bcrypt.hash(body.password, 2);
   body.password = hashPassword;
 
-  await Doctor.create(body);
+  await user.create(body);
 
   return res.status(201).json({ message: "signup succesfull" });
 });
 
-router.post("/login",async (req, res) => {
+router.post("/login", async (req, res) => {
   const body = { ...req.body };
 
-  const doctor = await Doctor.findOne({ username: body.username });
-  if (!doctor) {
+  const user = await User.findOne({ username: body.username });
+  if (!user) {
     return res
       .status(403)
       .json({ message: "username or password is incorrect" });
   }
-  const isMatch = await bcrypt.compare(body.password, user.password);
-  if (!isMatch) {
+  const isMatching = await bcrypt.compare(body.password, user.password);
+  if (!isMatching) {
     return res
       .status(403)
       .json({ message: "username and password is incorrect" });
 
   }
 
-  const secret_key="jkjlsdnmewmahjdhklkdlkhjkjedlieidjbnclllgfrgtryrujdjrishhdwjklkwlkdpokc"
-  const token=jwt.sign({role:'DOCTOR',id:doctor._id},secret_key,{
+  const secret_key="jkjlsdnmewmahjdhklkdlkhjkjedlieidjbnclllgshhdwjklkwlkdpokc"
+  const token=jwt.sign({role:'USER',id:user._id},secret_key,{
     expiresIn:'7d'
   })
-  res.status(201).json({ message: "login succesfull" });
+  return res.status(201).json({ message: "login succesfull",token:token });
 });
 export default router;

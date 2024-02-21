@@ -35,5 +35,5 @@ const userSchema=Schema({
   
 },{timestamps:true})
 
-const User=model('doctor',userSchema)
+const User=model('user',userSchema)
 export default User;
